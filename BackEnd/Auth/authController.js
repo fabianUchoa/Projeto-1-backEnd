@@ -27,7 +27,11 @@ async function login(req, res) {
         }
 
         try {
-            await createLog('login', 'Usuário logado com sucesso', user._id);
+            await createLog({
+                user: user._id,
+                action: 'login',
+                message: 'Usuário logado com sucesso'
+            });
         } catch (logErr) {
             console.error('Erro ao registrar log:', logErr.message);
         }

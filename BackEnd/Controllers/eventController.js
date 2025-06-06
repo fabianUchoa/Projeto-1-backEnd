@@ -37,50 +37,46 @@ function createEvent(req, res) {
 }
 
 
-async function listEvents(req, res) {
-  try {
-    
-    const url = req.url;
-    const userId =  url.split('/')[0];
+async function listEvents(req, res, userId) {
+    try {
 
-    if (!userId) {
-      res.writeHead(400, { 'Content-Type': 'application/json' });
-      return res.end(JSON.stringify({ error: 'userId é obrigatório na query string' }));
-    }
+        
+        const events = await EventModel.find({ user: userId  }).populate('user', 'name email');
 
-    
-    const events = await EventModel.find({ user: userId }).populate('user', 'name email');
+        await createLog({
+            action: 'listar_eventos',
+            message: `Eventos listados com sucesso.`,
+            user: userId
+        });
 
-    await createLog({
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(events));
+    } catch (err) {
+        await createLog({
         action: 'erro_listar_eventos',
         message: `Erro ao listar eventos: ${err.message}`,
         user: userId
-    });
-
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(events));
-  } catch (err) {
-    await createLog({
-      action: 'erro_listar_eventos',
-      message: `Erro ao listar eventos: ${err.message}`,
-      user: userId
-    });
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Erro ao listar eventos' }));
-  }
+        });
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Erro ao listar eventos' }));
+    }
 }
 
 
 
-async function deleteEvent(req, res) {
-  const id = req.url.split('/')[2];
-  try {
-    await EventModel.findByIdAndDelete(id);
 
+async function deleteEvent(req, res, id) {
+    console.log(id);
+    try {
+    
+    const Event = await EventModel.findById(id);
+    userId = Event.user;
+    await EventModel.findByIdAndDelete(id);
+    console.log(userId);
     await createLog({
       action: 'deletar_evento',
       message: `Evento deletado: ${id}`,
-      user: id
+      user: userId
     });
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -89,7 +85,7 @@ async function deleteEvent(req, res) {
     await createLog({
       action: 'erro_deletar_evento',
       message: `Erro ao deletar evento: ${err.message}`,
-      user: id
+      user: userId._id
     });
     res.writeHead(400, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'Erro ao deletar evento' }));
