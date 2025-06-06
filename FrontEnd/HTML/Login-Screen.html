@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../STYLE/Login-Screen.css">
+    <link rel="shortcut icon" href="../IMAGES/LOGIN-PAGE-IMAGES/DatE-icon.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Edat</title>
+</head>
+<body>
+    <section id="loginConteiner">
+      <div id="loginContent">
+        <h2>Entre com sua conta</h2>
+
+        <div id="loginMain">
+            <div class="inputArea">
+                <label for="emailLogin" class="inputLabel">Informe seu email:</label>
+                <input type="text" id="emailLogin" class="inputBox">
+            </div>
+
+            <div class="inputArea">
+                <label for="passwordLogin" class="inputLabel">Informe sua senha:</label>
+                <input type="password" id="passwordLogin" name="passwordLogin" class="inputBox">
+            </div>
+        </div>
+        <div id="loginFooter">
+            <div id="otherOptions">
+                <span id="forgotPassword">Esqueci a senha</span>
+                <span id="createNewUser">Criar nova conta</span>
+            </div>
+            <div id="loginButton" onclick="loginUser()">
+                Entrar
+            </div>
+        </loginFooter>
+      </div>
+    <div id="userModal" class="modal">
+    <div class="modal-content">
+        <span class="close-user">&times;</span>
+        <h2>Criar Usuário</h2>
+        <form id="userForm">
+        <label>Nome:</label>
+        <input type="text" id="userName" required>
+
+        <label>E-mail:</label>
+        <input type="email" id="userEmail" required>
+
+        <label>Senha:</label>
+        <input type="password" id="userPassword" required>
+        <label>Confirmar senha:</label>
+        <input type="password" id="userConfirmPassword" required>
+        <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+    </div>
+
+    </section>
+    <section id="informationConteiner">
+        <div id="imagePanel">
+            <img src="../IMAGES/LOGIN-PAGE-IMAGES/calendarioIMG.png" alt="" srcset="">
+        </div>
+        <div id="informationText">
+            <span>Este aplicativo de calendário digital permite que você registre e armazene eventos importantes de forma prática e rápida. Com ele, você pode organizar compromissos, aniversários, reuniões e muito mais, tudo em um só lugar. A interface é simples e facilita o acesso às suas datas sempre que precisar. Além disso, você pode editar ou excluir eventos facilmente para manter sua agenda sempre atualizada. Com segurança e praticidade, seu planejamento diário fica muito mais eficiente.
+            </span>
+        </div>
+    </section>
+    <script src="../JAVASCRIPT/Login-Script.js"></script>
+</body>
+</html>
