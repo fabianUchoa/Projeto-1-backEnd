@@ -15,11 +15,10 @@ function createEvent(req, res) {
       }
 
       const newEvent = await EventModel.create(data);
-
       await createLog({
         action: 'criar_evento',
         message: `Evento criado: ${data.title}`,
-        user: data.user.id
+        user: data.user._id
       });
 
       res.writeHead(201, { 'Content-Type': 'application/json' });

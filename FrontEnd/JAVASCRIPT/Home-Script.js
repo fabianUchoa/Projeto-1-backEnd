@@ -9,6 +9,17 @@ const eventForm = document.getElementById('eventForm');
 const user = JSON.parse(window.sessionStorage.getItem('user'))
 
 let currentDate = new Date();
+renderCalendar(currentDate);
+ 
+prevMonthBtn.addEventListener('click', () => {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar(currentDate);
+});
+
+nextMonthBtn.addEventListener('click', () => {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar(currentDate);
+});
 
 
 
@@ -79,7 +90,6 @@ eventForm.onsubmit = function (e) {
   const local = document.getElementById('eventLocation').value;
 
 
-
   axios.post('http://localhost:3000/new-event',{
       title: nome,
       description: descricao,
@@ -96,17 +106,6 @@ eventForm.onsubmit = function (e) {
   modal.style.display = 'none';
 };
 
-prevMonthBtn.addEventListener('click', () => {
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar(currentDate);
-});
-
-nextMonthBtn.addEventListener('click', () => {
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar(currentDate);
-});
-
-renderCalendar(currentDate);
 
 document.getElementById('eventosCadastrados').addEventListener('click', function(e) {
   e.preventDefault();
@@ -193,11 +192,13 @@ function openLogModal(logs){
   container.innerHTML = "";
 
   logs.forEach(log => {
+    let user = 'Usuário não encontrado'
+    if(log.user)
+      user = log.user.email;
     const div = document.createElement("div");
-    console.log(log)
     div.className = "event-item";
     div.innerHTML = `
-      <span><strong>${log.action}</strong> - ${log.createdAt.split('T')[0]} - <strong>${user.email}</strong> <br>${log.message}</span>
+      <span><strong>${log.action}</strong> - ${log.createdAt.split('.')[0]} - <strong>${user}</strong> <br>${log.message}</span>
     `;
     container.appendChild(div);
   });

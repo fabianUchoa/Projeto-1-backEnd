@@ -12,7 +12,7 @@ function router(req, res) {
         return userController.listUsers(req, res);
     }
 
-    if (method === 'DELETE' && pathname === '/users/:id') {
+    if (method === 'DELETE' && pathname === 'delete/users') {
         return userController.deleteUser(req, res);
     }
 
