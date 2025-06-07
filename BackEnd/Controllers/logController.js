@@ -3,7 +3,7 @@ const LogModel = require('../Models/Log');
 
 async function createLog(logData) {
   try {
-
+    console.log(logData)
     const newLog = await LogModel.create(logData);
     return newLog;
 

@@ -2,14 +2,20 @@ const EventModel = require('../Models/Event');
 const { createLog } = require('./logController');
 
 
-function createEvent(req, res) {
+async function createEvent(req, res) {
   let body = '';
+  let data = null;
   req.on('data', chunk => body += chunk);
   req.on('end', async () => {
     try {
-      const data = JSON.parse(body);
+      data = JSON.parse(body);
 
       if (!data.title || !data.date || !data.user) {
+        await createLog({
+        action: 'erro_criar_evento',
+        message: `Erro ao criar evento: Campos obrigatórios faltando.`,
+        user: data.user._id
+      });
         res.writeHead(400, { 'Content-Type': 'application/json' });
         return res.end(JSON.stringify({ error: 'Campos obrigatórios faltando' }));
       }
@@ -27,7 +33,7 @@ function createEvent(req, res) {
       await createLog({
         action: 'erro_criar_evento',
         message: `Erro ao criar evento: ${err.message}`,
-        user: data.user.id
+        user: data.user._id
       });
       res.writeHead(400, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Erro ao criar evento' }));
@@ -65,7 +71,6 @@ async function listEvents(req, res, userId) {
 
 
 async function deleteEvent(req, res, id) {
-    console.log(id);
     try {
     
     const Event = await EventModel.findById(id);
